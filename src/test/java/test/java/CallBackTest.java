@@ -1,6 +1,10 @@
 package test.java;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -17,12 +21,22 @@ public class CallBackTest {
     String phone = DataGenerator.makePhone();
     String city = DataGenerator.makeCity();
 
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+
+
+    }
+
     @BeforeEach
     void setUp() {
         open("http://localhost:9999/");
     }
 
-
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
     //перенос даты и новая функция
     @Test
     void shouldSubitRequestNew() {
